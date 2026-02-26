@@ -1,14 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
-import type {
-  Account,
-  Transaction,
-  Category,
-  Budget,
-  AppSettings,
-  UserProfile,
-  Currency,
-} from '../backend';
+import type { Account, Transaction, Category, Budget, AppSettings, UserProfile } from '@/backend';
+import { TransactionType } from '@/backend';
 
 // ── User Profile ──────────────────────────────────────────────────────────────
 
@@ -179,41 +172,36 @@ export function useSearchTransactions(keyword: string) {
       if (!actor) return [];
       return actor.searchTransactions(keyword);
     },
-    enabled: !!actor && !isFetching && keyword.trim().length > 0,
+    enabled: !!actor && !isFetching && keyword.length > 0,
   });
 }
 
 export function useFilterTransactions(params: {
-  startTime: bigint | null;
-  endTime: bigint | null;
-  category: string | null;
-  accountId: string | null;
+  startTime?: bigint;
+  endTime?: bigint;
+  category?: string;
+  accountId?: string;
   sortBy: string;
 }) {
   const { actor, isFetching } = useActor();
 
-  // Serialize bigint values to strings for the query key to avoid BigInt-in-key lint error
-  const queryKey = [
-    'transactions',
-    'filter',
-    {
-      startTime: params.startTime !== null ? params.startTime.toString() : null,
-      endTime: params.endTime !== null ? params.endTime.toString() : null,
-      category: params.category,
-      accountId: params.accountId,
-      sortBy: params.sortBy,
-    },
-  ];
-
   return useQuery<Transaction[]>({
-    queryKey,
+    queryKey: [
+      'transactions',
+      'filter',
+      params.startTime?.toString(),
+      params.endTime?.toString(),
+      params.category,
+      params.accountId,
+      params.sortBy,
+    ],
     queryFn: async () => {
       if (!actor) return [];
       return actor.filterTransactions(
-        params.startTime,
-        params.endTime,
-        params.category,
-        params.accountId,
+        params.startTime ?? null,
+        params.endTime ?? null,
+        params.category ?? null,
+        params.accountId ?? null,
         params.sortBy
       );
     },
@@ -262,7 +250,6 @@ export function useEditCategory() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['categories'] });
-      queryClient.invalidateQueries({ queryKey: ['transactions'] });
     },
   });
 }
@@ -358,14 +345,17 @@ export function useUpdateSettings() {
 }
 
 export function useGetCurrencies() {
-  const { actor } = useActor();
+  const { actor, isFetching } = useActor();
 
-  return useQuery<Currency[]>({
+  return useQuery({
     queryKey: ['currencies'],
     queryFn: async () => {
       if (!actor) return [];
       return actor.getCurrencies();
     },
-    enabled: !!actor,
+    enabled: !!actor && !isFetching,
   });
 }
+
+// Re-export TransactionType for convenience
+export { TransactionType };

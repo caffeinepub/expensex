@@ -48,10 +48,10 @@ export default function RecordsPage() {
 
   const { data: searchResults } = useSearchTransactions(search);
   const { data: filterResults } = useFilterTransactions({
-    startTime: null,
-    endTime: null,
-    category: filterCategory || null,
-    accountId: filterAccount || null,
+    startTime: undefined,
+    endTime: undefined,
+    category: filterCategory || undefined,
+    accountId: filterAccount || undefined,
     sortBy,
   });
 
@@ -137,7 +137,7 @@ export default function RecordsPage() {
                 <SelectTrigger className="h-9 text-xs">
                   <SelectValue placeholder="All" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper" className="z-[200]">
                   <SelectItem value="">All Categories</SelectItem>
                   {categories.map((c) => (
                     <SelectItem key={c.id} value={c.name}>
@@ -153,7 +153,7 @@ export default function RecordsPage() {
                 <SelectTrigger className="h-9 text-xs">
                   <SelectValue placeholder="All" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper" className="z-[200]">
                   <SelectItem value="">All Accounts</SelectItem>
                   {accounts.map((a) => (
                     <SelectItem key={a.id} value={a.id}>
@@ -170,7 +170,7 @@ export default function RecordsPage() {
               <SelectTrigger className="h-9 text-xs">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent position="popper" className="z-[200]">
                 <SelectItem value="date_desc">Date (Newest First)</SelectItem>
                 <SelectItem value="date_asc">Date (Oldest First)</SelectItem>
                 <SelectItem value="amount_desc">Amount (High to Low)</SelectItem>

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 3,
+  "projectStateVersion": 5,
   "summary": "ExpenseX - A fully functional financial management app with secure login, multi-account management, transactions/records system, category management, budget management, analytics/reports, and settings. Features a clean Green/Blue finance theme with dark mode, bottom navigation bar, and responsive design.",
   "architectural_notes": [
     "Green/Blue clean finance theme with dark mode support",
@@ -8,10 +8,13 @@
     "Currency defaults to ₹ (Indian Rupee); language supports English and Hindi"
   ],
   "known_issues": [
-    "Previous build attempts failed due to feature complexity — current attempt is a simplified but complete version"
+    "Previous build attempts failed due to feature complexity — current attempt is a simplified but complete version",
+    "Account selection not working in transaction form",
+    "Add button not functioning",
+    "Transfer From/To dropdowns not selectable",
+    "Transfer option in Accounts section not working"
   ],
-  "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- ExpenseX app logo — a modern minimal icon with a stylized 'X' inside a rounded square, green-to-teal gradient background, white foreground mark (expensex-logo.dim_256x256.png)",
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-implement-internet-identity-based-secure-login-unauthenticated-users-see-a-login-screen-authenticated-users-see-the-main-app-store-each-user-s-data-scoped-to-their-principal",
@@ -82,6 +85,38 @@
       "title": "Apply a clean finance-themed visual design using a Green and Teal/Blue color palette with dark mode support, smooth CSS/Framer-style transitions on page and modal changes, and a fully responsive layout optimized for mobile-first use.",
       "reqIds": [
         "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-account-selector-dropdown-in-the-add-transaction-modal-addtransactionmodal-tsx-so-that-users-can-successfully-select-an-account-from-the-list-the-select-element-must-be-interactive-properly-bound-to-react-state-and-reflect-the-chosen-value",
+      "title": "Fix the account selector dropdown in the Add Transaction modal (AddTransactionModal.tsx) so that users can successfully select an account from the list. The select element must be interactive, properly bound to React state, and reflect the chosen value.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-add-submit-button-in-the-add-transaction-modal-addtransactionmodal-tsx-so-that-clicking-it-correctly-submits-the-transaction-form-the-button-must-not-be-inadvertently-disabled-must-trigger-form-validation-and-must-invoke-the-mutation-to-save-the-transaction",
+      "title": "Fix the Add/Submit button in the Add Transaction modal (AddTransactionModal.tsx) so that clicking it correctly submits the transaction form. The button must not be inadvertently disabled, must trigger form validation, and must invoke the mutation to save the transaction.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-from-and-to-account-selector-dropdowns-in-the-transfer-money-modal-transfermoneymodal-tsx-so-that-users-can-select-source-and-destination-accounts-both-selectors-must-be-interactive-independently-bound-to-react-state-and-pass-the-correct-account-ids-to-the-transfer-mutation-on-submit",
+      "title": "Fix the From and To account selector dropdowns in the Transfer Money modal (TransferMoneyModal.tsx) so that users can select source and destination accounts. Both selectors must be interactive, independently bound to React state, and pass the correct account IDs to the transfer mutation on submit.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-transfer-button-action-in-the-accounts-page-accountspage-tsx-so-that-clicking-the-transfer-option-on-an-account-opens-the-transfermoneymodal-correctly-and-pre-fills-or-allows-selection-of-the-source-account-the-modal-must-open-render-without-errors-and-allow-the-user-to-complete-a-transfer",
+      "title": "Fix the Transfer button/action in the Accounts page (AccountsPage.tsx) so that clicking the Transfer option on an account opens the TransferMoneyModal correctly and pre-fills or allows selection of the source account. The modal must open, render without errors, and allow the user to complete a transfer.",
+      "reqIds": [
+        "REQ-13"
       ],
       "version": 1
     }

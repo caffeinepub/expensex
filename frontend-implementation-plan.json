@@ -1,461 +1,72 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "ExpenseX – Full-Stack Personal Finance App Frontend Implementation",
+  "title": "Fix account selection, add transaction button, and transfer dropdowns",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Implement Internet Identity-based secure login with user profile setup and principal-scoped data access",
+      "id": "REQ-10",
+      "summary": "Fix account selector dropdown in Add Transaction modal to allow interactive account selection",
       "acceptanceCriteria": [
-        "Unauthenticated users cannot access any app data or screens.",
-        "Login via Internet Identity works and redirects to the Home dashboard.",
-        "Each user's accounts, transactions, categories, and budgets are isolated by principal."
+        "Clicking the account dropdown in the Add Transaction modal opens the options list",
+        "Selecting an account updates the displayed value in the dropdown",
+        "The selected account value is used when submitting the transaction form"
       ],
       "file_operations": [
-        {
-          "path": "frontend/src/components/LoginScreen.tsx",
-          "operation": "create",
-          "description": "Create a login screen component that displays when users are not authenticated. Use the authorization component's Internet Identity integration. Include the ExpenseX app logo from frontend/public/assets/generated/expensex-logo.dim_256x256.png and a login button that triggers the Internet Identity flow. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/ProfileSetupModal.tsx",
-          "operation": "create",
-          "description": "Create a modal that appears on first login when getCallerUserProfile returns null. Prompt the user to enter their name and call saveCallerUserProfile to persist it. Follow the authorization component's guidelines for preventing profile setup modal flash by checking both isFetched and userProfile state."
-        },
-        {
-          "path": "frontend/src/hooks/useGetCallerUserProfile.ts",
-          "operation": "create",
-          "description": "Create a custom hook that fetches the current user's profile using getCallerUserProfile. Follow the authorization component's pattern for handling actor dependency and properly reflecting loading state to prevent modal flash. Return isLoading that accounts for actorFetching state."
-        },
-        {
-          "path": "frontend/src/hooks/useSaveCallerUserProfile.ts",
-          "operation": "create",
-          "description": "Create a mutation hook for saving the caller's user profile using saveCallerUserProfile. Invalidate the currentUserProfile query key on success."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Wrap the main application in authentication logic. Show LoginScreen when not authenticated. After authentication, check for user profile and show ProfileSetupModal if none exists. Only render the main app once authenticated and profile is set. Clear all cached application data including user profile when logging out."
-        }
-      ]
-    },
-    {
-      "id": "REQ-2",
-      "summary": "Implement multi-account management with five account types, CRUD operations, and inter-account transfers",
-      "acceptanceCriteria": [
-        "User can create an account specifying name, type, and initial balance.",
-        "User can delete an account (with confirmation).",
-        "Account list shows each account with its current computed balance.",
-        "Transfer between accounts deducts from source and adds to destination, and appears as a Transfer record in both accounts.",
-        "All five account types (Cash, Bank Account, UPI, Credit Card, Custom) are supported."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useGetAccounts.ts",
-          "operation": "create",
-          "description": "Create a query hook that fetches all accounts using the getAccounts backend method. Enable the query only when authenticated."
-        },
-        {
-          "path": "frontend/src/hooks/useAddAccount.ts",
-          "operation": "create",
-          "description": "Create a mutation hook for adding an account using addAccount. Invalidate accounts query on success."
-        },
-        {
-          "path": "frontend/src/hooks/useDeleteAccount.ts",
-          "operation": "create",
-          "description": "Create a mutation hook for deleting an account using deleteAccount. Invalidate accounts and transactions queries on success."
-        },
-        {
-          "path": "frontend/src/hooks/useTransferMoney.ts",
-          "operation": "create",
-          "description": "Create a mutation hook for transferring money between accounts using transferMoney. Invalidate accounts and transactions queries on success."
-        },
-        {
-          "path": "frontend/src/pages/AccountsPage.tsx",
-          "operation": "create",
-          "description": "Create the Accounts page that displays a list of all user accounts with their names, types, and computed balances. Include an Add Account button that opens AddAccountModal and delete buttons for each account that trigger DeleteAccountConfirmDialog."
-        },
-        {
-          "path": "frontend/src/components/AddAccountModal.tsx",
-          "operation": "create",
-          "description": "Create a modal for adding a new account. Include form fields for name, account type dropdown (Cash, Bank Account, UPI, Credit Card, Custom with text input), and initial balance. Use useAddAccount hook to submit."
-        },
-        {
-          "path": "frontend/src/components/DeleteAccountConfirmDialog.tsx",
-          "operation": "create",
-          "description": "Create a confirmation dialog for account deletion. Show account name and confirm/cancel buttons. Use useDeleteAccount hook on confirmation."
-        },
-        {
-          "path": "frontend/src/components/TransferMoneyModal.tsx",
-          "operation": "create",
-          "description": "Create a modal for transferring money between two accounts. Include dropdowns for source and destination accounts, amount input, optional description field, and submit button. Use useTransferMoney hook with a generated transaction ID and current timestamp."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Register the AccountsPage route in the router so it can be navigated to from the bottom navigation bar."
-        }
-      ]
-    },
-    {
-      "id": "REQ-3",
-      "summary": "Implement comprehensive transaction management with add, delete, search, filter, and sort capabilities",
-      "acceptanceCriteria": [
-        "User can add an Income, Expense, or Transfer transaction with account, category, amount, and date/time.",
-        "User can delete any transaction.",
-        "Search input filters the displayed transaction list by keyword.",
-        "Filter controls allow filtering by date range, category, and account simultaneously.",
-        "Sort controls allow sorting by amount (asc/desc) and date (asc/desc).",
-        "Account balances update correctly when transactions are added or deleted."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useGetTransactions.ts",
-          "operation": "create",
-          "description": "Create a query hook that fetches all transactions using getTransactions. Enable only when authenticated."
-        },
-        {
-          "path": "frontend/src/hooks/useAddTransaction.ts",
-          "operation": "create",
-          "description": "Create a mutation hook for adding a transaction using addTransaction. Invalidate transactions and accounts queries on success to update balances."
-        },
-        {
-          "path": "frontend/src/hooks/useDeleteTransaction.ts",
-          "operation": "create",
-          "description": "Create a mutation hook for deleting a transaction using deleteTransaction. Invalidate transactions and accounts queries on success."
-        },
-        {
-          "path": "frontend/src/hooks/useSearchTransactions.ts",
-          "operation": "create",
-          "description": "Create a query hook that searches transactions by keyword using searchTransactions. Accept keyword parameter and enable only when keyword is non-empty."
-        },
-        {
-          "path": "frontend/src/hooks/useFilterTransactions.ts",
-          "operation": "create",
-          "description": "Create a query hook that filters and sorts transactions using filterTransactions. Accept startTime, endTime, category, accountId, and sortBy parameters."
-        },
-        {
-          "path": "frontend/src/pages/RecordsPage.tsx",
-          "operation": "create",
-          "description": "Create the Records page that displays the transaction list with search input, filter controls (date range pickers, category dropdown, account dropdown), and sort controls (amount asc/desc, date asc/desc buttons). Show each transaction with type icon, category, amount with currency symbol, account, date, and a delete button. Use useSearchTransactions for search and useFilterTransactions for filtering/sorting."
-        },
         {
           "path": "frontend/src/components/AddTransactionModal.tsx",
-          "operation": "create",
-          "description": "Create a modal for adding a new transaction. Include transaction type radio buttons (Income, Expense, Transfer), account dropdown, category dropdown, amount input, date/time picker defaulting to now, and optional description field. Generate a unique transaction ID and use current timestamp. Use useAddTransaction hook to submit. For Transfer type, also trigger the TransferMoneyModal flow instead."
-        },
-        {
-          "path": "frontend/src/components/DeleteTransactionConfirmDialog.tsx",
-          "operation": "create",
-          "description": "Create a confirmation dialog for transaction deletion. Show transaction details and confirm/cancel buttons. Use useDeleteTransaction hook on confirmation."
-        },
-        {
-          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Register the RecordsPage route in the router so it can be navigated to from the bottom navigation bar."
+          "description": "Fix the account selector dropdown by ensuring the select element has proper value binding to React state, onChange handler is correctly wired, and the selected account ID is properly captured. Verify that the Select component from shadcn/ui is correctly configured with SelectTrigger, SelectValue, SelectContent, and SelectItem elements, and that the account state variable is initialized and updated on selection."
         }
       ]
     },
     {
-      "id": "REQ-4",
-      "summary": "Implement category management with 10 default categories and custom category CRUD operations",
+      "id": "REQ-11",
+      "summary": "Fix Add/Submit button in Add Transaction modal to properly submit the transaction form",
       "acceptanceCriteria": [
-        "All 10 default categories exist on first launch for a new user.",
-        "User can add a new custom category with a name.",
-        "User can edit an existing category's name.",
-        "User can delete a category (with confirmation).",
-        "Categories are available for selection when adding a transaction."
+        "The Add button is enabled and clickable when required fields are filled",
+        "Clicking Add submits the form and calls the add transaction mutation",
+        "A loading state is shown while the mutation is in progress",
+        "On success, the modal closes and the transaction appears in the records list"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useGetCategories.ts",
-          "operation": "create",
-          "description": "Create a query hook that fetches all categories using getCategories. Enable only when authenticated."
-        },
-        {
-          "path": "frontend/src/hooks/useAddCategory.ts",
-          "operation": "create",
-          "description": "Create a mutation hook for adding a custom category using addCategory. Invalidate categories query on success."
-        },
-        {
-          "path": "frontend/src/hooks/useEditCategory.ts",
-          "operation": "create",
-          "description": "Create a mutation hook for editing a category name using editCategory. Invalidate categories and transactions queries on success."
-        },
-        {
-          "path": "frontend/src/hooks/useDeleteCategory.ts",
-          "operation": "create",
-          "description": "Create a mutation hook for deleting a category using deleteCategory. Invalidate categories query on success."
-        },
-        {
-          "path": "frontend/src/components/CategoryManagement.tsx",
-          "operation": "create",
-          "description": "Create a component that displays all categories (default and custom) with their names. Show edit and delete buttons for each category. Include an Add Category button that opens AddCategoryModal. Distinguish default categories visually (e.g., with a badge)."
-        },
-        {
-          "path": "frontend/src/components/AddCategoryModal.tsx",
-          "operation": "create",
-          "description": "Create a modal for adding a new custom category. Include a name input field and submit button. Use useAddCategory hook."
-        },
-        {
-          "path": "frontend/src/components/EditCategoryModal.tsx",
-          "operation": "create",
-          "description": "Create a modal for editing an existing category name. Pre-populate with current name and include submit button. Use useEditCategory hook."
-        },
-        {
-          "path": "frontend/src/components/DeleteCategoryConfirmDialog.tsx",
-          "operation": "create",
-          "description": "Create a confirmation dialog for category deletion. Show category name and confirm/cancel buttons. Use useDeleteCategory hook on confirmation."
-        },
-        {
-          "path": "frontend/src/pages/SettingsPage.tsx",
-          "operation": "create",
-          "description": "Create the Settings page that includes the CategoryManagement component along with currency and language settings (see REQ-7). This page is accessible from a settings icon in the header or a menu."
-        },
-        {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/components/AddTransactionModal.tsx",
           "operation": "modify",
-          "description": "Register the SettingsPage route in the router so it can be navigated to from the app header or menu."
+          "description": "Fix the Add/Submit button by ensuring it is not inadvertently disabled, form validation is triggered on click, and the useAddTransaction mutation is properly invoked with all required transaction fields. Add loading state display using mutation.isPending and ensure the modal closes on successful submission by calling onOpenChange(false) in the mutation's onSuccess callback."
         }
       ]
     },
     {
-      "id": "REQ-5",
-      "summary": "Implement budget management with overall and per-category monthly budgets, progress tracking, and warning/alert indicators",
+      "id": "REQ-12",
+      "summary": "Fix From and To account selector dropdowns in Transfer Money modal to allow independent account selection",
       "acceptanceCriteria": [
-        "User can set a total monthly budget amount.",
-        "User can set a budget for each individual category.",
-        "Budget screen shows remaining amount and a progress bar with percentage used.",
-        "An amber/yellow warning indicator appears when usage reaches 80%.",
-        "A red alert indicator appears when spending exceeds the budget.",
-        "Budgets are evaluated against expense transactions for the current calendar month."
+        "The From account dropdown lists all user accounts and allows selection",
+        "The To account dropdown lists all user accounts and allows selection",
+        "Selecting a value in From or To updates the displayed value immediately",
+        "The correct from and to account IDs are passed to the useTransferMoney mutation on submit"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useGetBudgets.ts",
-          "operation": "create",
-          "description": "Create a query hook that fetches all budgets using getBudgets. Enable only when authenticated."
-        },
-        {
-          "path": "frontend/src/hooks/useAddBudget.ts",
-          "operation": "create",
-          "description": "Create a mutation hook for adding a budget using addBudget. Invalidate budgets query on success."
-        },
-        {
-          "path": "frontend/src/hooks/useDeleteBudget.ts",
-          "operation": "create",
-          "description": "Create a mutation hook for deleting a budget using deleteBudget. Invalidate budgets query on success."
-        },
-        {
-          "path": "frontend/src/utils/budgetCalculations.ts",
-          "operation": "create",
-          "description": "Create utility functions to calculate budget usage from transactions. Include functions to: filter expense transactions for the current month, compute total spending, compute per-category spending, calculate remaining budget, calculate percentage used, and determine warning/alert status (80% = warning, >100% = alert)."
-        },
-        {
-          "path": "frontend/src/components/BudgetOverview.tsx",
-          "operation": "create",
-          "description": "Create a component that displays the overall monthly budget and all per-category budgets. For each budget, show: budget amount, spent amount, remaining amount, a progress bar with percentage used, and warning (amber at 80%) or alert (red when exceeded) indicators. Include Add Budget and Delete Budget actions."
-        },
-        {
-          "path": "frontend/src/components/AddBudgetModal.tsx",
-          "operation": "create",
-          "description": "Create a modal for adding a new budget. Include a toggle for overall vs per-category budget, category dropdown (when per-category is selected), amount input, and submit button. Use useAddBudget hook."
-        },
-        {
-          "path": "frontend/src/components/DeleteBudgetConfirmDialog.tsx",
-          "operation": "create",
-          "description": "Create a confirmation dialog for budget deletion. Show budget details and confirm/cancel buttons. Use useDeleteBudget hook on confirmation."
-        },
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
-          "operation": "create",
-          "description": "Create the Home page that displays a dashboard summary including total balance, total income, total expense, and the BudgetOverview component showing current month budget status with warning/alert indicators."
-        },
-        {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/components/TransferMoneyModal.tsx",
           "operation": "modify",
-          "description": "Register the HomePage route as the default route after authentication and profile setup. Wire it to the bottom navigation Home tab."
+          "description": "Fix the From and To account selector dropdowns by ensuring each has independent React state variables (fromAccountId and toAccountId), proper value binding to their respective Select components, and correct onChange handlers that update the corresponding state. Verify that both account IDs are correctly passed to the useTransferMoney mutation call on form submission and that each selector independently reflects the chosen account value."
         }
       ]
     },
     {
-      "id": "REQ-6",
-      "summary": "Implement analysis and reports screen with dashboard summary, charts, time filters, and PDF download",
+      "id": "REQ-13",
+      "summary": "Fix Transfer button in Accounts page to properly open TransferMoneyModal with functional account selection",
       "acceptanceCriteria": [
-        "Dashboard shows correct totals for balance, income, and expense.",
-        "Bar chart displays monthly income vs expense for the selected period.",
-        "Pie chart shows expense distribution across categories.",
-        "Line graph shows spending trend over the selected time range.",
-        "Weekly, monthly, and yearly filter buttons change all charts accordingly.",
-        "A 'Download PDF' button generates and downloads a PDF summary of the filtered transactions."
+        "Clicking the Transfer button on any account in the Accounts page opens the TransferMoneyModal",
+        "The modal renders all account selector fields without errors",
+        "The user can complete the transfer form and submit it successfully",
+        "After a successful transfer, account balances update to reflect the transfer"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/utils/chartCalculations.ts",
-          "operation": "create",
-          "description": "Create utility functions to prepare chart data from transactions. Include functions to: compute total balance/income/expense, aggregate monthly income vs expense for bar chart, aggregate category-wise expenses for pie chart, prepare time-series data for line graph, and filter transactions by weekly/monthly/yearly time ranges."
-        },
-        {
-          "path": "frontend/src/utils/pdfGenerator.ts",
-          "operation": "create",
-          "description": "Create a client-side PDF generation utility using a library like jsPDF. Include a function to generate a PDF report from a list of transactions, including summary totals and a transaction table with date, category, amount, and account columns."
-        },
-        {
-          "path": "frontend/src/components/DashboardSummary.tsx",
-          "operation": "create",
-          "description": "Create a component that displays three summary cards: Total Balance, Total Income, and Total Expense. Compute these values from accounts and transactions data."
-        },
-        {
-          "path": "frontend/src/components/MonthlyOverviewChart.tsx",
-          "operation": "create",
-          "description": "Create a bar chart component that displays monthly income vs expense. Use a charting library like recharts or chart.js. Accept filtered time range and transactions as props."
-        },
-        {
-          "path": "frontend/src/components/CategoryPieChart.tsx",
-          "operation": "create",
-          "description": "Create a pie chart component that displays category-wise expense distribution. Use a charting library. Accept filtered transactions as props."
-        },
-        {
-          "path": "frontend/src/components/SpendingTrendLineChart.tsx",
-          "operation": "create",
-          "description": "Create a line chart component that displays spending trend over time. Use a charting library. Accept filtered time range and transactions as props."
-        },
-        {
-          "path": "frontend/src/pages/AnalysisPage.tsx",
-          "operation": "create",
-          "description": "Create the Analysis page that includes: DashboardSummary at the top, filter buttons for Weekly/Monthly/Yearly time ranges, MonthlyOverviewChart, CategoryPieChart, SpendingTrendLineChart, and a Download PDF button. When the time filter changes, update all charts with the filtered transaction data. The Download PDF button triggers the pdfGenerator utility."
-        },
-        {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/pages/AccountsPage.tsx",
           "operation": "modify",
-          "description": "Register the AnalysisPage route in the router so it can be navigated to from the bottom navigation Analysis tab."
-        }
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "summary": "Implement settings screen with currency selection and language toggle, persisting preferences across sessions",
-      "acceptanceCriteria": [
-        "Settings screen has a currency selector defaulting to ₹ (INR).",
-        "Changing currency updates the symbol displayed next to all amounts app-wide.",
-        "Settings screen has a language toggle between English and Hindi.",
-        "Selected language and currency preferences persist across sessions."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/hooks/useGetCurrencies.ts",
-          "operation": "create",
-          "description": "Create a query hook that fetches available currencies using getCurrencies."
-        },
-        {
-          "path": "frontend/src/hooks/useGetSettings.ts",
-          "operation": "create",
-          "description": "Create a query hook that fetches user settings using getSettings. Enable only when authenticated."
-        },
-        {
-          "path": "frontend/src/hooks/useUpdateSettings.ts",
-          "operation": "create",
-          "description": "Create a mutation hook for updating settings using updateSettings. Invalidate settings query on success."
-        },
-        {
-          "path": "frontend/src/context/SettingsContext.tsx",
-          "operation": "create",
-          "description": "Create a React context that provides the current currency and language settings app-wide. Fetch settings with useGetSettings and expose a helper function to format amounts with the selected currency symbol."
-        },
-        {
-          "path": "frontend/src/components/CurrencySelector.tsx",
-          "operation": "create",
-          "description": "Create a dropdown component for selecting currency. Display currency name and symbol. On change, call useUpdateSettings to persist the selection."
-        },
-        {
-          "path": "frontend/src/components/LanguageToggle.tsx",
-          "operation": "create",
-          "description": "Create a toggle component for switching between English and Hindi. On change, call useUpdateSettings to persist the selection."
-        },
-        {
-          "path": "frontend/src/pages/SettingsPage.tsx",
-          "operation": "modify",
-          "description": "Add CurrencySelector and LanguageToggle components to the Settings page alongside CategoryManagement (from REQ-4)."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Wrap the main app with SettingsContext.Provider so that currency and language settings are available throughout the application."
-        }
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "summary": "Implement bottom navigation bar with five tabs including a center FAB '+' button for adding transactions",
-      "acceptanceCriteria": [
-        "A bottom navigation bar is always visible.",
-        "Five tabs are present: Home, Records, a center '+' button, Analysis, Accounts.",
-        "Tapping the '+' button opens the Add Transaction modal/sheet.",
-        "Active tab is visually highlighted.",
-        "Navigation works correctly on both narrow (mobile) and wide (desktop) viewports."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/BottomNavigation.tsx",
-          "operation": "create",
-          "description": "Create a bottom navigation bar component with five items: Home, Records, a prominent center '+' FAB button, Analysis, and Accounts. Use react-router-dom's Link or navigate for tab navigation. The '+' button opens AddTransactionModal. Highlight the active tab based on the current route. Use responsive CSS to ensure the bar is fixed at the bottom on mobile and adapts on desktop widths."
-        },
-        {
-          "path": "frontend/src/components/AppLayout.tsx",
-          "operation": "create",
-          "description": "Create a layout component that wraps the main content and includes the BottomNavigation component. Ensure the layout provides space for the bottom bar and prevents content from being hidden behind it."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Wrap authenticated routes with the AppLayout component so that BottomNavigation is always visible when the user is logged in and the app is in use."
-        }
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "summary": "Apply a clean finance-themed design with green/teal palette, dark mode support, smooth animations, and mobile-first responsive layout",
-      "acceptanceCriteria": [
-        "Primary colors are green and teal/blue throughout the UI.",
-        "A dark mode toggle exists (in Settings or a header button) and persists preference.",
-        "Page and modal transitions use smooth animations (fade/slide).",
-        "Layout is fully usable on mobile screen widths (375px+) and adapts gracefully on desktop."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Define CSS custom properties for the green/teal color palette in both light and dark mode themes. Set primary, secondary, accent, background, and text colors. Include smooth transition properties for theme switching. Ensure mobile-first responsive base styles."
-        },
-        {
-          "path": "frontend/tailwind.config.js",
-          "operation": "modify",
-          "description": "Extend the Tailwind theme with the green/teal color palette. Configure dark mode using the 'class' strategy. Add custom animation utilities for smooth fade and slide transitions."
-        },
-        {
-          "path": "frontend/src/hooks/useDarkMode.ts",
-          "operation": "create",
-          "description": "Create a custom hook that manages dark mode state using localStorage and applies the 'dark' class to the document root. Return the current mode and a toggle function."
-        },
-        {
-          "path": "frontend/src/components/DarkModeToggle.tsx",
-          "operation": "create",
-          "description": "Create a toggle button component for switching between light and dark mode. Use the useDarkMode hook and display a sun/moon icon based on the current mode."
-        },
-        {
-          "path": "frontend/src/components/AppLayout.tsx",
-          "operation": "modify",
-          "description": "Include DarkModeToggle in the app header or a settings icon dropdown within the layout."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Apply smooth fade/slide CSS transitions or Framer Motion animations to route transitions and modal open/close effects. Ensure all page transitions are smooth and polished."
-        },
-        {
-          "path": "frontend/public/assets/generated/expensex-logo.dim_256x256.png",
-          "operation": "create",
-          "description": "Wire the generated ExpenseX app logo image into the LoginScreen component and app header/branding. The logo file is already generated at this workspace path with a modern minimal icon featuring a stylized 'X' inside a rounded square with green-to-teal gradient background and white foreground mark."
+          "description": "Fix the Transfer button action by ensuring the TransferMoneyModal component is properly imported and rendered conditionally based on modal open state. Verify that clicking the Transfer option on an account correctly sets the transfer modal state to open and that the modal receives any necessary props (such as selectedAccountId for pre-filling). Ensure the modal's onOpenChange handler is wired correctly to close the modal after successful transfer."
         }
       ]
     }

@@ -1,143 +1,159 @@
-import React, { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from '@/components/ui/dialog';
+import { useState } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { useTransferMoney, useGetAccounts } from '../hooks/useQueries';
-import { generateId, nowTimestamp } from '../utils/idGenerator';
-import { Loader2, ArrowRight } from 'lucide-react';
-import { useSettings } from '../context/SettingsContext';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Loader2 } from 'lucide-react';
+import { useGetAccounts, useTransferMoney } from '@/hooks/useQueries';
 
-interface Props {
+interface TransferMoneyModalProps {
   open: boolean;
-  onClose: () => void;
+  onOpenChange: (open: boolean) => void;
+  defaultFromAccountId?: string;
 }
 
-export default function TransferMoneyModal({ open, onClose }: Props) {
-  const { data: accounts = [] } = useGetAccounts();
-  const { mutate, isPending } = useTransferMoney();
-  const { currencySymbol } = useSettings();
-
-  const [fromId, setFromId] = useState('');
-  const [toId, setToId] = useState('');
+export default function TransferMoneyModal({ open, onOpenChange, defaultFromAccountId }: TransferMoneyModalProps) {
+  const [fromAccountId, setFromAccountId] = useState(defaultFromAccountId ?? '');
+  const [toAccountId, setToAccountId] = useState('');
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!fromId || !toId || !amount || fromId === toId) return;
+  const { data: accounts = [] } = useGetAccounts();
+  const transferMoney = useTransferMoney();
 
-    mutate(
+  const resetForm = () => {
+    setFromAccountId(defaultFromAccountId ?? '');
+    setToAccountId('');
+    setAmount('');
+    setDescription('');
+  };
+
+  const handleSubmit = () => {
+    const parsedAmount = parseFloat(amount);
+    if (!fromAccountId || !toAccountId || !amount || isNaN(parsedAmount) || parsedAmount <= 0) return;
+    if (fromAccountId === toAccountId) return;
+
+    const timestamp = BigInt(Date.now()) * 1_000_000n;
+
+    transferMoney.mutate(
       {
-        fromAccountId: fromId,
-        toAccountId: toId,
-        amount: parseFloat(amount),
-        transactionId: generateId('txn'),
-        timestamp: nowTimestamp(),
-        description: description.trim(),
+        fromAccountId,
+        toAccountId,
+        amount: parsedAmount,
+        transactionId: `tx_transfer_${Date.now()}_${Math.random().toString(36).slice(2)}`,
+        timestamp,
+        description,
       },
       {
         onSuccess: () => {
-          setFromId('');
-          setToId('');
-          setAmount('');
-          setDescription('');
-          onClose();
+          resetForm();
+          onOpenChange(false);
         },
       }
     );
   };
 
+  const isValid =
+    !!fromAccountId &&
+    !!toAccountId &&
+    fromAccountId !== toAccountId &&
+    !!amount &&
+    !isNaN(parseFloat(amount)) &&
+    parseFloat(amount) > 0;
+
   return (
-    <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="sm:max-w-sm">
+    <Dialog open={open} onOpenChange={(v) => { if (!v) resetForm(); onOpenChange(v); }}>
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Transfer Money</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-[1fr,auto,1fr] items-end gap-2">
-            <div className="space-y-2">
-              <Label>From</Label>
-              <Select value={fromId} onValueChange={setFromId}>
-                <SelectTrigger className="h-11">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  {accounts.map((a) => (
-                    <SelectItem key={a.id} value={a.id}>
-                      {a.name}
+
+        <div className="space-y-4 py-2">
+          {/* From Account */}
+          <div className="space-y-1">
+            <Label>From Account</Label>
+            <Select value={fromAccountId} onValueChange={setFromAccountId}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select source account" />
+              </SelectTrigger>
+              <SelectContent position="popper" className="z-[200]">
+                {accounts.map((acc) => (
+                  <SelectItem key={acc.id} value={acc.id}>
+                    {acc.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* To Account */}
+          <div className="space-y-1">
+            <Label>To Account</Label>
+            <Select value={toAccountId} onValueChange={setToAccountId}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select destination account" />
+              </SelectTrigger>
+              <SelectContent position="popper" className="z-[200]">
+                {accounts
+                  .filter((acc) => acc.id !== fromAccountId)
+                  .map((acc) => (
+                    <SelectItem key={acc.id} value={acc.id}>
+                      {acc.name}
                     </SelectItem>
                   ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <ArrowRight className="w-5 h-5 text-muted-foreground mb-2" />
-            <div className="space-y-2">
-              <Label>To</Label>
-              <Select value={toId} onValueChange={setToId}>
-                <SelectTrigger className="h-11">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  {accounts
-                    .filter((a) => a.id !== fromId)
-                    .map((a) => (
-                      <SelectItem key={a.id} value={a.id}>
-                        {a.name}
-                      </SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
-            </div>
+              </SelectContent>
+            </Select>
           </div>
-          <div className="space-y-2">
-            <Label>Amount ({currencySymbol})</Label>
+
+          {/* Amount */}
+          <div className="space-y-1">
+            <Label htmlFor="transfer-amount">Amount</Label>
             <Input
+              id="transfer-amount"
               type="number"
+              min="0"
+              step="0.01"
               placeholder="0.00"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="h-11"
-              min="0.01"
-              step="0.01"
             />
           </div>
-          <div className="space-y-2">
-            <Label>Note (optional)</Label>
+
+          {/* Description */}
+          <div className="space-y-1">
+            <Label htmlFor="transfer-description">Description (optional)</Label>
             <Input
-              placeholder="Transfer note"
+              id="transfer-description"
+              placeholder="Add a note..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="h-11"
             />
           </div>
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={!fromId || !toId || !amount || fromId === toId || isPending}
-              className="gradient-primary text-white border-0"
-            >
-              {isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-              Transfer
-            </Button>
-          </DialogFooter>
-        </form>
+
+          {fromAccountId && toAccountId && fromAccountId === toAccountId && (
+            <p className="text-sm text-destructive">Source and destination accounts must be different.</p>
+          )}
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={() => { resetForm(); onOpenChange(false); }}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            disabled={!isValid || transferMoney.isPending}
+          >
+            {transferMoney.isPending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Transferring...
+              </>
+            ) : (
+              'Transfer'
+            )}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

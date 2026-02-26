@@ -62,7 +62,7 @@ export default function BottomNavigation({ activePage, onNavigate }: Props) {
         </div>
       </nav>
 
-      <AddTransactionModal open={showAddModal} onClose={() => setShowAddModal(false)} />
+      <AddTransactionModal open={showAddModal} onOpenChange={setShowAddModal} />
     </>
   );
 }
