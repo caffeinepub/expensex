@@ -1,0 +1,203 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-internet-identity-based-secure-login-unauthenticated-users-see-a-login-screen-authenticated-users-see-the-main-app-store-each-user-s-data-scoped-to-their-principal",
+      "featureTitle": "Implement Internet Identity-based secure login. Unauthenticated users see a login screen; authenticated users see the main app. Store each user's data scoped to their principal.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/LoginScreen.tsx",
+        "frontend/src/components/ProfileSetupModal.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-multi-account-management-support-account-types-cash-bank-account-upi-credit-card-and-custom-each-account-stores-a-name-type-and-running-balance-users-can-add-a-new-account-delete-an-account-view-its-balance-and-transfer-money-between-two-accounts-which-creates-a-transfer-transaction",
+      "featureTitle": "Implement multi-account management. Support account types: Cash, Bank Account, UPI, Credit Card, and Custom. Each account stores a name, type, and running balance. Users can add a new account, delete an account, view its balance, and transfer money between two accounts (which creates a Transfer transaction).",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AddAccountModal.tsx",
+        "frontend/src/components/TransferMoneyModal.tsx",
+        "frontend/src/pages/AccountsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-transactions-records-system-each-transaction-has-a-type-income-expense-or-transfer-an-account-a-category-an-amount-and-a-date-time-support-add-transaction-delete-transaction-search-transactions-by-keyword-filter-by-date-range-category-account-and-sort-by-amount-or-date-ascending-descending",
+      "featureTitle": "Implement a Transactions/Records system. Each transaction has a type (Income, Expense, or Transfer), an account, a category, an amount, and a date/time. Support: add transaction, delete transaction, search transactions by keyword, filter by date range / category / account, and sort by amount or date ascending/descending.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AddTransactionModal.tsx",
+        "frontend/src/pages/RecordsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-category-management-pre-populate-default-categories-food-travel-shopping-rent-salary-bills-emi-entertainment-health-other-users-can-add-custom-categories-edit-existing-category-names-and-delete-categories",
+      "featureTitle": "Implement Category Management. Pre-populate default categories: Food, Travel, Shopping, Rent, Salary, Bills, EMI, Entertainment, Health, Other. Users can add custom categories, edit existing category names, and delete categories.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AddCategoryModal.tsx",
+        "frontend/src/components/CategoryManagement.tsx",
+        "frontend/src/components/EditCategoryModal.tsx",
+        "frontend/src/pages/SettingsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-budget-management-users-can-set-an-overall-monthly-budget-and-per-category-monthly-budgets-display-remaining-budget-and-percentage-used-for-the-current-month-show-a-warning-when-80-of-a-budget-is-consumed-and-a-red-alert-when-a-budget-is-exceeded",
+      "featureTitle": "Implement Budget Management. Users can set an overall monthly budget and per-category monthly budgets. Display remaining budget and percentage used for the current month. Show a warning when 80% of a budget is consumed, and a red alert when a budget is exceeded.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AddBudgetModal.tsx",
+        "frontend/src/components/BudgetOverview.tsx",
+        "frontend/src/pages/HomePage.tsx",
+        "frontend/src/utils/budgetCalculations.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-an-analysis-reports-screen-with-a-dashboard-summary-total-balance-total-income-total-expense-a-monthly-overview-bar-chart-income-vs-expense-per-month-a-pie-chart-for-category-wise-expenses-a-line-graph-for-spending-trend-over-time-and-a-weekly-monthly-yearly-filter-include-a-button-to-download-a-simple-pdf-report-of-transactions",
+      "featureTitle": "Implement an Analysis & Reports screen with a dashboard summary (Total Balance, Total Income, Total Expense), a monthly overview bar chart (income vs expense per month), a pie chart for category-wise expenses, a line graph for spending trend over time, and a weekly/monthly/yearly filter. Include a button to download a simple PDF report of transactions.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/pages/AnalysisPage.tsx",
+        "frontend/src/utils/chartCalculations.ts",
+        "frontend/src/utils/pdfGenerator.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-settings-screen-with-currency-selection-default-inr-from-a-list-of-common-currencies-and-language-toggle-between-english-and-hindi-the-selected-currency-symbol-must-appear-throughout-the-app-wherever-amounts-are-displayed",
+      "featureTitle": "Implement a Settings screen with: currency selection (default ₹ INR) from a list of common currencies, and language toggle between English and Hindi. The selected currency symbol must appear throughout the app wherever amounts are displayed.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/context/SettingsContext.tsx",
+        "frontend/src/pages/SettingsPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-bottom-navigation-bar-with-five-tabs-home-records-add-a-prominent-center-fab-button-that-opens-the-add-transaction-modal-analysis-and-accounts-navigation-must-be-responsive-and-work-on-both-mobile-and-desktop-widths",
+      "featureTitle": "Implement a bottom navigation bar with five tabs: Home, Records, Add (a prominent center '+' FAB button that opens the add-transaction modal), Analysis, and Accounts. Navigation must be responsive and work on both mobile and desktop widths.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AppLayout.tsx",
+        "frontend/src/components/BottomNavigation.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-apply-a-clean-finance-themed-visual-design-using-a-green-and-teal-blue-color-palette-with-dark-mode-support-smooth-css-framer-style-transitions-on-page-and-modal-changes-and-a-fully-responsive-layout-optimized-for-mobile-first-use",
+      "featureTitle": "Apply a clean finance-themed visual design using a Green and Teal/Blue color palette with dark mode support, smooth CSS/Framer-style transitions on page and modal changes, and a fully responsive layout optimized for mobile-first use.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AppLayout.tsx",
+        "frontend/src/components/DarkModeToggle.tsx",
+        "frontend/src/hooks/useDarkMode.ts",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

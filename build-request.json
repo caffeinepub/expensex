@@ -1,0 +1,244 @@
+{
+  "kind": "build_request",
+  "title": "ExpenseX – Full-Stack Personal Finance App",
+  "projectName": "ExpenseX",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement Internet Identity-based secure login. Unauthenticated users see a login screen; authenticated users see the main app. Store each user's data scoped to their principal.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-8"
+        ],
+        "quotes": [
+          "Secure Login"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Unauthenticated users cannot access any app data or screens.",
+        "Login via Internet Identity works and redirects to the Home dashboard.",
+        "Each user's accounts, transactions, categories, and budgets are isolated by principal."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Implement multi-account management. Support account types: Cash, Bank Account, UPI, Credit Card, and Custom. Each account stores a name, type, and running balance. Users can add a new account, delete an account, view its balance, and transfer money between two accounts (which creates a Transfer transaction).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-8"
+        ],
+        "quotes": [
+          "Accounts Management",
+          "Add account",
+          "Delete account",
+          "View account balance",
+          "Transfer money between accounts"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can create an account specifying name, type, and initial balance.",
+        "User can delete an account (with confirmation).",
+        "Account list shows each account with its current computed balance.",
+        "Transfer between accounts deducts from source and adds to destination, and appears as a Transfer record in both accounts.",
+        "All five account types (Cash, Bank Account, UPI, Credit Card, Custom) are supported."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement a Transactions/Records system. Each transaction has a type (Income, Expense, or Transfer), an account, a category, an amount, and a date/time. Support: add transaction, delete transaction, search transactions by keyword, filter by date range / category / account, and sort by amount or date ascending/descending.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-8"
+        ],
+        "quotes": [
+          "Add Transaction",
+          "Delete transaction",
+          "Search transactions",
+          "Filter by date / category / account",
+          "Sort by amount/date"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can add an Income, Expense, or Transfer transaction with account, category, amount, and date/time.",
+        "User can delete any transaction.",
+        "Search input filters the displayed transaction list by keyword.",
+        "Filter controls allow filtering by date range, category, and account simultaneously.",
+        "Sort controls allow sorting by amount (asc/desc) and date (asc/desc).",
+        "Account balances update correctly when transactions are added or deleted."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Implement Category Management. Pre-populate default categories: Food, Travel, Shopping, Rent, Salary, Bills, EMI, Entertainment, Health, Other. Users can add custom categories, edit existing category names, and delete categories.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-8"
+        ],
+        "quotes": [
+          "Category Management",
+          "Add custom category",
+          "Edit category",
+          "Delete category"
+        ]
+      },
+      "acceptanceCriteria": [
+        "All 10 default categories exist on first launch for a new user.",
+        "User can add a new custom category with a name.",
+        "User can edit an existing category's name.",
+        "User can delete a category (with confirmation).",
+        "Categories are available for selection when adding a transaction."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Implement Budget Management. Users can set an overall monthly budget and per-category monthly budgets. Display remaining budget and percentage used for the current month. Show a warning when 80% of a budget is consumed, and a red alert when a budget is exceeded.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-8"
+        ],
+        "quotes": [
+          "Set Monthly Budget",
+          "Set Category-wise Budget",
+          "Show Remaining Budget",
+          "Show Percentage Used",
+          "Warning alert when 80% budget used",
+          "Red alert when budget exceeded"
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can set a total monthly budget amount.",
+        "User can set a budget for each individual category.",
+        "Budget screen shows remaining amount and a progress bar with percentage used.",
+        "An amber/yellow warning indicator appears when usage reaches 80%.",
+        "A red alert indicator appears when spending exceeds the budget.",
+        "Budgets are evaluated against expense transactions for the current calendar month."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Implement an Analysis & Reports screen with a dashboard summary (Total Balance, Total Income, Total Expense), a monthly overview bar chart (income vs expense per month), a pie chart for category-wise expenses, a line graph for spending trend over time, and a weekly/monthly/yearly filter. Include a button to download a simple PDF report of transactions.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-8"
+        ],
+        "quotes": [
+          "Dashboard",
+          "Total Balance",
+          "Total Income",
+          "Total Expense",
+          "Monthly Overview Chart",
+          "Pie Chart",
+          "Bar Chart",
+          "Line Graph",
+          "Weekly, Monthly, Yearly filter",
+          "Download PDf"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dashboard shows correct totals for balance, income, and expense.",
+        "Bar chart displays monthly income vs expense for the selected period.",
+        "Pie chart shows expense distribution across categories.",
+        "Line graph shows spending trend over the selected time range.",
+        "Weekly, monthly, and yearly filter buttons change all charts accordingly.",
+        "A 'Download PDF' button generates and downloads a PDF summary of the filtered transactions."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Implement a Settings screen with: currency selection (default ₹ INR) from a list of common currencies, and language toggle between English and Hindi. The selected currency symbol must appear throughout the app wherever amounts are displayed.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-8"
+        ],
+        "quotes": [
+          "Currency selection (₹ default)",
+          "Language (English / Hind"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Settings screen has a currency selector defaulting to ₹ (INR).",
+        "Changing currency updates the symbol displayed next to all amounts app-wide.",
+        "Settings screen has a language toggle between English and Hindi.",
+        "Selected language and currency preferences persist across sessions."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Implement a bottom navigation bar with five tabs: Home, Records, Add (a prominent center '+' FAB button that opens the add-transaction modal), Analysis, and Accounts. Navigation must be responsive and work on both mobile and desktop widths.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-8"
+        ],
+        "quotes": [
+          "Bottom Navigation Bar",
+          "Home",
+          "Records",
+          "Add (+ button center)",
+          "Analysis",
+          "Accounts"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A bottom navigation bar is always visible.",
+        "Five tabs are present: Home, Records, a center '+' button, Analysis, Accounts.",
+        "Tapping the '+' button opens the Add Transaction modal/sheet.",
+        "Active tab is visually highlighted.",
+        "Navigation works correctly on both narrow (mobile) and wide (desktop) viewports."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Apply a clean finance-themed visual design using a Green and Teal/Blue color palette with dark mode support, smooth CSS/Framer-style transitions on page and modal changes, and a fully responsive layout optimized for mobile-first use.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-8"
+        ],
+        "quotes": [
+          "Clean finance theme (Green/Blue)",
+          "Dark Mode",
+          "Smooth animations",
+          "Responsive design"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Primary colors are green and teal/blue throughout the UI.",
+        "A dark mode toggle exists (in Settings or a header button) and persists preference.",
+        "Page and modal transitions use smooth animations (fade/slide).",
+        "Layout is fully usable on mobile screen widths (375px+) and adapts gracefully on desktop."
+      ]
+    }
+  ],
+  "constraints": [
+    "All backend logic must remain in a single Motoko actor (backend/main.mo).",
+    "Do not edit any file under frontend/src/hooks/ or frontend/src/components/ui.",
+    "No external databases or third-party APIs; all data must be stored on-chain in the Motoko actor.",
+    "PDF generation must be client-side only (no backend involvement).",
+    "Real-time WebSocket/push notifications are not supported; use polling or in-app alerts only."
+  ],
+  "nonGoals": [
+    "Email or SMS reminders/notifications.",
+    "Bill/receipt image attachment uploads.",
+    "Financial goals tracking.",
+    "Data export to cloud storage.",
+    "Multi-user shared accounts or family mode.",
+    "Bank API or UPI API integration for automatic transaction import.",
+    "Edit transaction (only add and delete for this build).",
+    "Edit account (only add and delete for this build)."
+  ],
+  "imageRequirements": {
+    "required": [
+      "ExpenseX app logo — a modern minimal icon with a stylized 'X' inside a rounded square, green-to-teal gradient background, white foreground mark (expensex-logo.dim_256x256.png)"
+    ],
+    "edits": []
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "ExpenseX - A fully functional financial management app with secure login, multi-account management, transactions/records system, category management, budget management, analytics/reports, and settings. Features a clean Green/Blue finance theme with dark mode, bottom navigation bar, and responsive design.",
+  "architectural_notes": [
+    "Green/Blue clean finance theme with dark mode support",
+    "Bottom navigation bar layout: Home | Records | Add(+) | Analysis | Accounts",
+    "Currency defaults to ₹ (Indian Rupee); language supports English and Hindi"
+  ],
+  "known_issues": [
+    "Previous build attempts failed due to feature complexity — current attempt is a simplified but complete version"
+  ],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- ExpenseX app logo — a modern minimal icon with a stylized 'X' inside a rounded square, green-to-teal gradient background, white foreground mark (expensex-logo.dim_256x256.png)",
+  "existing_features": [
+    {
+      "id": "feature-implement-internet-identity-based-secure-login-unauthenticated-users-see-a-login-screen-authenticated-users-see-the-main-app-store-each-user-s-data-scoped-to-their-principal",
+      "title": "Implement Internet Identity-based secure login. Unauthenticated users see a login screen; authenticated users see the main app. Store each user's data scoped to their principal.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-multi-account-management-support-account-types-cash-bank-account-upi-credit-card-and-custom-each-account-stores-a-name-type-and-running-balance-users-can-add-a-new-account-delete-an-account-view-its-balance-and-transfer-money-between-two-accounts-which-creates-a-transfer-transaction",
+      "title": "Implement multi-account management. Support account types: Cash, Bank Account, UPI, Credit Card, and Custom. Each account stores a name, type, and running balance. Users can add a new account, delete an account, view its balance, and transfer money between two accounts (which creates a Transfer transaction).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-transactions-records-system-each-transaction-has-a-type-income-expense-or-transfer-an-account-a-category-an-amount-and-a-date-time-support-add-transaction-delete-transaction-search-transactions-by-keyword-filter-by-date-range-category-account-and-sort-by-amount-or-date-ascending-descending",
+      "title": "Implement a Transactions/Records system. Each transaction has a type (Income, Expense, or Transfer), an account, a category, an amount, and a date/time. Support: add transaction, delete transaction, search transactions by keyword, filter by date range / category / account, and sort by amount or date ascending/descending.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-category-management-pre-populate-default-categories-food-travel-shopping-rent-salary-bills-emi-entertainment-health-other-users-can-add-custom-categories-edit-existing-category-names-and-delete-categories",
+      "title": "Implement Category Management. Pre-populate default categories: Food, Travel, Shopping, Rent, Salary, Bills, EMI, Entertainment, Health, Other. Users can add custom categories, edit existing category names, and delete categories.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-budget-management-users-can-set-an-overall-monthly-budget-and-per-category-monthly-budgets-display-remaining-budget-and-percentage-used-for-the-current-month-show-a-warning-when-80-of-a-budget-is-consumed-and-a-red-alert-when-a-budget-is-exceeded",
+      "title": "Implement Budget Management. Users can set an overall monthly budget and per-category monthly budgets. Display remaining budget and percentage used for the current month. Show a warning when 80% of a budget is consumed, and a red alert when a budget is exceeded.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-an-analysis-reports-screen-with-a-dashboard-summary-total-balance-total-income-total-expense-a-monthly-overview-bar-chart-income-vs-expense-per-month-a-pie-chart-for-category-wise-expenses-a-line-graph-for-spending-trend-over-time-and-a-weekly-monthly-yearly-filter-include-a-button-to-download-a-simple-pdf-report-of-transactions",
+      "title": "Implement an Analysis & Reports screen with a dashboard summary (Total Balance, Total Income, Total Expense), a monthly overview bar chart (income vs expense per month), a pie chart for category-wise expenses, a line graph for spending trend over time, and a weekly/monthly/yearly filter. Include a button to download a simple PDF report of transactions.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-settings-screen-with-currency-selection-default-inr-from-a-list-of-common-currencies-and-language-toggle-between-english-and-hindi-the-selected-currency-symbol-must-appear-throughout-the-app-wherever-amounts-are-displayed",
+      "title": "Implement a Settings screen with: currency selection (default ₹ INR) from a list of common currencies, and language toggle between English and Hindi. The selected currency symbol must appear throughout the app wherever amounts are displayed.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-bottom-navigation-bar-with-five-tabs-home-records-add-a-prominent-center-fab-button-that-opens-the-add-transaction-modal-analysis-and-accounts-navigation-must-be-responsive-and-work-on-both-mobile-and-desktop-widths",
+      "title": "Implement a bottom navigation bar with five tabs: Home, Records, Add (a prominent center '+' FAB button that opens the add-transaction modal), Analysis, and Accounts. Navigation must be responsive and work on both mobile and desktop widths.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-clean-finance-themed-visual-design-using-a-green-and-teal-blue-color-palette-with-dark-mode-support-smooth-css-framer-style-transitions-on-page-and-modal-changes-and-a-fully-responsive-layout-optimized-for-mobile-first-use",
+      "title": "Apply a clean finance-themed visual design using a Green and Teal/Blue color palette with dark mode support, smooth CSS/Framer-style transitions on page and modal changes, and a fully responsive layout optimized for mobile-first use.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Secure Login system",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Accounts Management (Cash, Bank, UPI, Credit Card, Custom) with add/delete/balance/transfer",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Records/Transactions system with Income/Expense/Transfer, category, amount, date/time, delete, search, filter, sort",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Category Management with defaults and custom add/edit/delete",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Budget Management with monthly/category budgets, remaining/percentage display, 80% warning and exceeded alerts",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Analysis & Reports with dashboard totals, pie/bar/line charts, weekly/monthly/yearly filter, PDF download and share",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Notification alerts for reminders",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Bottom Navigation Bar (Home, Records, Add+, Analysis, Accounts) with Green/Blue theme, dark mode, smooth animations, responsive design",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Settings page with currency selection (₹ default) and language (English/Hindi)",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "ExpenseX",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
